@@ -183,6 +183,11 @@ class StoryboardToolUI(QtWidgets.QDialog):
         self.tabs.addTab(self.cameras_tab, "Cameras")
         self.tabs.addTab(self.guides_tab, "Guides")
 
+        self.capture_tab = QtWidgets.QWidget()
+        self.tabs.addTab(self.capture_tab, "Capture")
+        self._build_capture_tab()
+
+
         self._build_cameras_tab()
         self._build_guides_tab()
 
@@ -299,6 +304,107 @@ class StoryboardToolUI(QtWidgets.QDialog):
         layout.addWidget(self.safe_cb)
 
         layout.addStretch()
+
+# ---------------- Capture Tab ----------------
+
+def _build_capture_tab(self):
+    layout = QtWidgets.QVBoxLayout(self.capture_tab)
+    layout.setContentsMargins(8, 8, 8, 8)
+    layout.setSpacing(8)
+
+    info = QtWidgets.QLabel("Capture still images from selected cameras.")
+    layout.addWidget(info)
+
+    # Resolution
+    res_layout = QtWidgets.QHBoxLayout()
+    layout.addLayout(res_layout)
+
+    res_layout.addWidget(QtWidgets.QLabel("Resolution:"))
+    self.width_field = QtWidgets.QLineEdit("1280")
+    self.height_field = QtWidgets.QLineEdit("720")
+    self.width_field.setMaximumWidth(60)
+    self.height_field.setMaximumWidth(60)
+
+    res_layout.addWidget(self.width_field)
+    res_layout.addWidget(QtWidgets.QLabel("x"))
+    res_layout.addWidget(self.height_field)
+
+    # Frame selection
+    frame_layout = QtWidgets.QHBoxLayout()
+    layout.addLayout(frame_layout)
+
+    self.frame_field = QtWidgets.QLineEdit()
+    self.frame_field.setPlaceholderText("Frame (blank = current frame)")
+    self.frame_field.setMaximumWidth(150)
+    frame_layout.addWidget(self.frame_field)
+
+    # Capture button
+    capture_btn = QtWidgets.QPushButton("Capture Selected Shots")
+    capture_btn.clicked.connect(self.capture_selected_shots)
+    layout.addWidget(capture_btn)
+
+    # Output log
+    self.capture_log = QtWidgets.QTextEdit()
+    self.capture_log.setReadOnly(True)
+    layout.addWidget(self.capture_log)
+
+    layout.addStretch()
+
+
+def capture_selected_shots(self):
+    """Capture still images from each selected camera."""
+    width = int(self.width_field.text())
+    height = int(self.height_field.text())
+
+    frame_text = self.frame_field.text()
+    if frame_text.strip():
+        frame = int(frame_text)
+    else:
+        frame = cmds.currentTime(q=True)
+
+    self.capture_log.append("Starting capture...\n")
+
+    # Storage for Module C
+    self.captured_images = []
+
+    for item in self.camera_items:
+        if not item.is_selected():
+            continue
+
+        cam = item.cam_name
+        shot = item.shot_label.text()
+
+        if not shot:
+            continue
+
+        # Build file path
+        filename = f"{shot}_{cam}.png"
+        filepath = cmds.internalVar(userTmpDir=True) + filename
+
+        # Switch viewport to camera
+        cmds.lookThru(cam)
+
+        # Capture
+        cmds.playblast(
+            cf=filepath,
+            format="image",
+            viewer=False,
+            showOrnaments=False,
+            frame=frame,
+            width=width,
+            height=height,
+            percent=100
+        )
+
+        self.capture_log.append(f"Captured {shot} from {cam} → {filepath}")
+        self.captured_images.append({
+            "shot": shot,
+            "camera": cam,
+            "notes": item.notes.text(),
+            "path": filepath
+        })
+
+    self.capture_log.append("\nCapture complete.\n")
 
 
 # ----------------------------------------------------------
