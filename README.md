@@ -1,42 +1,51 @@
-# Maya Shot Tool  
-A Maya Python + PySide2 utility for 3D shot planning, camera-based storyboarding, and viewport capture.
+============================================================
+DIRECTOR'S STORYBOARD CONSOLE - MAYA 2024
+============================================================
+Author: Jasmine F. Brown
+Department: ATEC, University of Texas at Dallas
+Project: P02 - Storyboard Shot Setup / 3D Shot Planning Tool
+GitHub URL: https://github.com/heroacademia56-collab/Maya-Shot-Tool
+------------------------------------------------------------
+I. OVERVIEW
+------------------------------------------------------------
+The Director's Storyboard Console is a Python-based Maya 
+utility designed to bridge the gap between 3D layout and 
+traditional storyboarding. It allows artists to organize 
+scene cameras into a logical sequence, add dialogue/notes, 
+and export a visual storyboard sheet directly within Maya.
 
-## 🎬 Overview
-The Maya Shot Tool is designed for layout artists, previs artists, and animators who need a fast, clean way to organize shots directly inside Maya. Instead of switching between multiple programs to plan shots or assemble boards, this tool lets you:
+------------------------------------------------------------
+II. KEY FEATURES
+------------------------------------------------------------
+* Non-Linear Expansion: Add multiple storyboard "beats" 
+  to a single camera using the (+) expansion system.
+* Live Viewport Sync: Use the (👁) icon to instantly snap 
+  the Maya viewport to the selected camera.
+* Selection Sync: Clicking a camera name in the UI 
+  automatically selects that object in the Maya scene.
+* Visual Review: Generates a 2-column image grid with 
+  active scene captures and notes for final review.
+* Composition Tools: Built-in toggles for Rule of Thirds 
+  and Safe Frames to assist in framing.
 
-- Select scene cameras and assign shot numbers  
-- Add notes for action, dialogue, or timing  
-- Enable composition guides (rule of thirds, horizon line, crosshair, safe frame)  
-- Capture still images from each selected camera  
-- Prepare assets for storyboard/contact sheet generation  
+------------------------------------------------------------
+III. INSTALLATION & USAGE
+------------------------------------------------------------
+1. Open Maya 2024.
+2. Open the Script Editor (Windows > General Editors > 
+   Script Editor).
+3. Create a new Python tab.
+4. Paste the source code from 'storyboard_console.py'.
+5. Execute the script (Ctrl+Enter).
+6. Use the "Sequence Builder" tab to refresh cameras and 
+   assign shot numbers.
+7. Use the "Final Review" tab to capture frames and 
+   generate the visual storyboard sheet.
 
-This tool focuses on **Maya-native shot planning**, making it ideal for animation students and production workflows where camera staging and previs happen inside a 3D scene.
-
----
-
-## 🧩 Features
-
-### **📷 Camera Management**
-- Auto-detect all cameras in the Maya scene  
-- Select which cameras become storyboard shots  
-- Add per-shot notes  
-- Auto-generate shot numbers (Shot 01, Shot 02, etc.)
-
-### **🎨 Composition Guides**
-- Rule of thirds overlay  
-- Horizon line  
-- Center crosshair  
-- Safe frame toggle  
-- Non-destructive, viewport-only helpers
-
-### **🖼 Viewport Capture**
-- Capture still images from selected cameras  
-- Choose resolution (default 1280×720)  
-- Capture current frame or a specific frame  
-- Saves images to Maya’s temp directory  
-- Stores metadata for later storyboard assembly
-
----
-
-## 🛠 Requirements
-- Autodesk Maya
+------------------------------------------------------------
+IV. TECHNICAL SPECS
+------------------------------------------------------------
+* Compatibility: Maya 2024 (Primary), Maya 2023.
+* Language: Python 3.10
+* Libraries: PySide6 (with PySide2 fallback logic).
+============================================================
